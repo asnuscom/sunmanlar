@@ -73,11 +73,11 @@ jobs:
       - name: Bağımlılıkları Yükle
         run: npm ci
 
-      - name: Üretim Paketini Derle
-        run: npm run build
-
       - name: GitHub Pages İçin Yapılandır
         uses: actions/configure-pages@v5
+
+      - name: Üretim Paketini Derle
+        run: npm run build
 
       - name: Dağıtım Paketini Yükle
         uses: actions/upload-pages-artifact@v3
