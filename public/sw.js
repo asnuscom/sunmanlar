@@ -1,9 +1,9 @@
-const CACHE_NAME = 'sunmanlar-cache-v1';
+const CACHE_NAME = 'sunmanlar-cache-v2';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon.svg'
+  './',
+  './index.html',
+  './manifest.json',
+  './icons/icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
       return response || fetch(event.request).catch(() => {
         // Fallback for navigation
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         }
       });
     })
