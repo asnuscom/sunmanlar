@@ -1,0 +1,89 @@
+name: Otomatik Canlı Dağıtım (Deploy to Firebase & GitHub Pages)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "deploy"
+  cancel-in-progress: true
+
+jobs:
+  # 1. Projeyi Derle ve Firebase Hosting'e Yükle
+  build_and_deploy_firebase:
+    name: Firebase Hosting Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Çek (Checkout)
+        uses: actions/checkout@v4
+
+      - name: Node.js Kur (v20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Bağımlılıkları Yükle
+        run: npm ci
+
+      - name: Üretim Paketini Derle (Build)
+        run: npm run build
+
+      - name: Firebase Hosting Dağıtımı
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        continue-on-error: true
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUNMANLAR_31F36 }}'
+          channelId: live
+          projectId: sunmanlar-31f36
+
+      # Firebase Token varsa yedek deploy
+      - name: Firebase CLI ile Alternatif Dağıtım
+        if: env.FIREBASE_TOKEN != ''
+        continue-on-error: true
+        run: npx firebase-tools deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+  # 2. GitHub Pages Yedek Canlı Dağıtımı (Sıfır Yapılandırma ile Anında Aktif)
+  deploy_github_pages:
+    name: GitHub Pages Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Kodu Çek
+        uses: actions/checkout@v4
+
+      - name: Node.js Kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Bağımlılıkları Yükle
+        run: npm ci
+
+      - name: Üretim Paketini Derle
+        run: npm run build
+
+      - name: GitHub Pages İçin Yapılandır
+        uses: actions/configure-pages@v5
+
+      - name: Dağıtım Paketini Yükle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: GitHub Pages Yayına Al
+        id: deployment
+        uses: actions/deploy-pages@v4

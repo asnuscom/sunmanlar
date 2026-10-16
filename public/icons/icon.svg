@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="50%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="100%" stop-color="#fde68a" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="512" height="512" rx="128" fill="url(#bg)" />
+  
+  <!-- Tree / Family Icon -->
+  <g fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Trunk -->
+    <path d="M256 420 V 260" />
+    <!-- Branch Left -->
+    <path d="M256 320 C 200 320, 160 270, 160 220" />
+    <!-- Branch Right -->
+    <path d="M256 300 C 312 300, 352 250, 352 200" />
+    <!-- Sub branch Left -->
+    <path d="M160 220 C 130 180, 120 140, 120 120" />
+    <path d="M160 220 C 180 180, 200 150, 210 130" />
+    <!-- Sub branch Right -->
+    <path d="M352 200 C 330 160, 310 130, 300 110" />
+    <path d="M352 200 C 380 160, 390 130, 400 110" />
+    <!-- Center Top -->
+    <path d="M256 260 V 150" />
+  </g>
+  
+  <!-- Family Nodes / Leaves -->
+  <circle cx="256" cy="130" r="26" fill="#fef3c7" />
+  <circle cx="120" cy="110" r="22" fill="#fde68a" />
+  <circle cx="210" cy="120" r="22" fill="#fde68a" />
+  <circle cx="300" cy="100" r="22" fill="#fde68a" />
+  <circle cx="400" cy="100" r="22" fill="#fde68a" />
+  <circle cx="160" cy="220" r="24" fill="#ffffff" />
+  <circle cx="352" cy="200" r="24" fill="#ffffff" />
+  <circle cx="256" cy="260" r="28" fill="#ffffff" />
+</svg>

@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Soyağacı Bireyleri: Herkes okuyabilir, sadece admin doğrudan değiştirebilir
+    match /persons/{personId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Aile Fotoğrafları: Herkes görebilir
+    match /photos/{photoId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['title', 'url']);
+      allow update, delete: if request.auth != null;
+    }
+
+    // Aile Duvarı: Herkes okuyabilir ve beğenebilir / yorum yapabilir
+    match /wall_posts/{postId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['title', 'content']);
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'comments']);
+      allow delete: if request.auth != null;
+    }
+
+    // Onay Bekleyen Talepler: Herkes talep iletebilir, sadece admin onaylayabilir/silebilir
+    match /pending_requests/{requestId} {
+      allow read: if request.auth != null;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
+    }
+
+    // Ayarlar & Sistem Bilgileri
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
