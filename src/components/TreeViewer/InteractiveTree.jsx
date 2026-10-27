@@ -603,46 +603,30 @@ export default function InteractiveTree({
 
           </div>
 
-          {/* TIER +1: Çocuklar + ERKEK VE KIZ ÇOCUK EKLE YAPRAKLARI */}
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-[2px] h-8 bg-stone-300" />
-            <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">
-              Çocukları ({children.length})
-            </span>
+          {/* TIER +1: Çocuklar */}
+          {children.length > 0 && (
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-[2px] h-8 bg-stone-300" />
+              <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">
+                Çocukları ({children.length})
+              </span>
 
-            <div className="flex items-center gap-3 sm:gap-4 flex-wrap justify-center max-w-5xl">
-              {/* Mevcut Çocuklar */}
-              {children.map(ch => {
-                const chGrandchildren = (ch.childrenIds || []).length;
-                return (
-                  <NodeCard 
-                    key={ch.id} 
-                    person={ch} 
-                    role={ch.gender === 'male' ? 'Oğul' : 'Kız'} 
-                    subInfo={chGrandchildren > 0 ? `${chGrandchildren} Çocuk` : null}
-                  />
-                );
-              })}
-
-              {/* DOĞRUDAN AĞAÇTA ERKEK ÇOCUK EKLE YAPRAĞI */}
-              <LeafAddCard
-                icon="👦"
-                title="Erkek Çocuk Ekle"
-                subtitle="Oğul Ekle"
-                colorScheme="blue"
-                onClick={() => triggerQuickAdd(focusPerson, 'CHILD_BOY')}
-              />
-
-              {/* DOĞRUDAN AĞAÇTA KIZ ÇOCUK EKLE YAPRAĞI */}
-              <LeafAddCard
-                icon="👧"
-                title="Kız Çocuk Ekle"
-                subtitle="Kız Ekle"
-                colorScheme="rose"
-                onClick={() => triggerQuickAdd(focusPerson, 'CHILD_GIRL')}
-              />
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap justify-center max-w-5xl">
+                {/* Mevcut Çocuklar */}
+                {children.map(ch => {
+                  const chGrandchildren = (ch.childrenIds || []).length;
+                  return (
+                    <NodeCard 
+                      key={ch.id} 
+                      person={ch} 
+                      role={ch.gender === 'male' ? 'Oğul' : 'Kız'} 
+                      subInfo={chGrandchildren > 0 ? `${chGrandchildren} Çocuk` : null}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* TIER +2: Torunlar (Grandchildren) */}
           {showGrandchildren && grandchildren.length > 0 && (
